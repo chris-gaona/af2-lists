@@ -12,7 +12,7 @@ import { AngularFire } from 'angularfire2';
 export class AuthData {
   fireAuth: any;
 
-  constructor(af: AngularFire) {
+  constructor(public af: AngularFire) {
     af.auth.subscribe( user => {
       if (user) {
         this.fireAuth = user.auth;
