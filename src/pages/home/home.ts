@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
 
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AuthData } from '../../providers/auth-data';
 
 @Component({
   selector: 'page-home',
@@ -15,8 +16,13 @@ export class HomePage {
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               public actionSheetCtrl: ActionSheetController,
+              public authData: AuthData,
               af: AngularFire) {
     this.songs = af.database.list('/songs');
+  }
+
+  logoutUser() {
+    this.authData.logoutUser();
   }
 
   addSong(){
