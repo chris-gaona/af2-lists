@@ -51,12 +51,20 @@ export class SignupPage {
   signupUser(){
     this.submitAttempt = true;
 
+    this.loading = this.loadingCtrl.create({});
+
+    this.loading.present();
+
     if (!this.signupForm.valid){
       console.log(this.signupForm.value);
+      this.loading.dismiss();
+
     } else {
       this.authData.signupUser(this.signupForm.value.email,
         this.signupForm.value.password).then(() => {
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.setRoot(HomePage).then(() => {
+          this.loading.dismiss();
+        });
       }, (error) => {
         this.loading.dismiss().then( () => {
           var errorMessage: string = error.message;
@@ -68,12 +76,6 @@ export class SignupPage {
           alert.present();
         });
       });
-
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-
-      this.loading.present();
 
     }
   }

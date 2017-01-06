@@ -52,12 +52,21 @@ export class LoginPage {
   loginUser(){
     this.submitAttempt = true;
 
+    this.loading = this.loadingCtrl.create({});
+
+    this.loading.present();
+
     if (!this.loginForm.valid){
       console.log(this.loginForm.value);
+      this.loading.dismiss();
+
     } else {
       this.authData.loginUser(this.loginForm.value.email,
         this.loginForm.value.password).then( authData => {
-        this.navCtrl.setRoot(HomePage);
+        this.navCtrl.setRoot(HomePage).then(() => {
+          this.loading.dismiss();
+        });
+
       }, error => {
         this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({
@@ -70,13 +79,9 @@ export class LoginPage {
             ]
           });
           alert.present();
-        });
+        })
       });
 
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
     }
   }
 
