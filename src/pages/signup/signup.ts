@@ -21,6 +21,7 @@ export class SignupPage {
               public formBuilder: FormBuilder, public loadingCtrl: LoadingController,
               public alertCtrl: AlertController) {
     this.signupForm = formBuilder.group({
+      name: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required,
         EmailValidator.isValid])],
       password: ['', Validators.compose([Validators.minLength(6),
@@ -62,8 +63,10 @@ export class SignupPage {
     } else {
       this.authData.signupUser(this.signupForm.value.email,
         this.signupForm.value.password).then(() => {
-        this.navCtrl.setRoot(HomePage).then(() => {
-          this.loading.dismiss();
+        this.authData.updateProfile(this.signupForm.value.name, '').then(() => {
+          this.navCtrl.setRoot(HomePage).then(() => {
+            this.loading.dismiss();
+          });
         });
       }, (error) => {
         this.loading.dismiss().then( () => {

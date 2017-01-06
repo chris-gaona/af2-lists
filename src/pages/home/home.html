@@ -17,14 +17,17 @@
 </ion-header>
 
 <ion-content padding>
+  <p>Hello, {{currentUser.displayName}}</p>
   The world is your oyster.
   <p>
     If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
   </p>
 
+  {{songs | async | json}}
+
   <ion-list>
     <ion-item *ngFor="let song of songs | async" (click)="showOptions(song.$key, song.title)">
-      {{song.title}}
+      {{song.title}} <small ion-text *ngIf="song.created_at && !song.updated_at">Created at: {{song.created_at | date}}</small><small ion-text *ngIf="song.updated_at">Updated at: {{song.updated_at | date}}</small>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { AngularFire } from 'angularfire2';
+import { AngularFire, FirebaseAuthState } from 'angularfire2';
 
 /*
   Generated class for the AuthData provider.
@@ -11,14 +11,21 @@ import { AngularFire } from 'angularfire2';
 @Injectable()
 export class AuthData {
   fireAuth: any;
+  authState: FirebaseAuthState;
 
   constructor(public af: AngularFire) {
     af.auth.subscribe( user => {
+      this.authState = user;
+
       if (user) {
         this.fireAuth = user.auth;
         console.log(user);
       }
     });
+  }
+
+  getUserInfo() {
+    return this.fireAuth;
   }
 
   loginUser(newEmail: string, newPassword: string): any {
@@ -35,5 +42,9 @@ export class AuthData {
 
   signupUser(newEmail: string, newPassword: string): any {
     return this.af.auth.createUser({ email: newEmail, password: newPassword });
+  }
+
+  updateProfile(displayName, photoURL) {
+    return this.authState.auth.updateProfile({displayName: displayName, photoURL: null});
   }
 }

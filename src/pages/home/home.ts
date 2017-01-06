@@ -12,13 +12,15 @@ import { AuthData } from '../../providers/auth-data';
 export class HomePage {
 
   songs: FirebaseListObservable<any>;
+  currentUser: any;
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
               public actionSheetCtrl: ActionSheetController,
               public authData: AuthData,
               af: AngularFire) {
-    this.songs = af.database.list('/songs');
+    this.currentUser = this.authData.getUserInfo();
+    this.songs = af.database.list('/users/' + this.currentUser.uid + '/songs');
   }
 
   logoutUser() {
@@ -46,7 +48,8 @@ export class HomePage {
           text: 'Save',
           handler: data => {
             this.songs.push({
-              title: data.title
+              title: data.title,
+              created_at: (new Date()).getTime()
             });
           }
         }
@@ -108,12 +111,24 @@ export class HomePage {
           text: 'Save',
           handler: data => {
             this.songs.update(songId, {
-              title: data.title
+              title: data.title,
+              updated_at: (new Date()).getTime()
             });
           }
         }
       ]
     });
     prompt.present();
+  }
+
+  getSongCount() {
+    // console.log('songs', this.songs);
+    //
+    // let count = 0;
+    // for (let i = 0; i < this.songs.length.length; i++) {
+    //   count++;
+    // }
+    //
+    // return count;
   }
 }
