@@ -56,7 +56,7 @@ export class ResetPasswordPage {
             message: "We just sent you a reset link to your email",
             buttons: [{ text: "Ok", role: 'cancel',
               handler: () => {
-                this.nav.pop();
+                this.navCtrl.pop();
               }
             }]
           });
