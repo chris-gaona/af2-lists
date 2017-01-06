@@ -12,6 +12,7 @@ import { AngularFire, FirebaseAuthState } from 'angularfire2';
 export class AuthData {
   fireAuth: any;
   authState: FirebaseAuthState;
+  user: any;
 
   constructor(public af: AngularFire) {
     af.auth.subscribe( user => {
@@ -20,6 +21,7 @@ export class AuthData {
       if (user) {
         this.fireAuth = user.auth;
         console.log(user);
+        this.user = af.database.list('/users/' + this.fireAuth.uid + '/user-info');
       }
     });
   }
@@ -45,6 +47,10 @@ export class AuthData {
   }
 
   updateProfile(displayName, photoURL) {
+    this.user.push({
+      user_since: (new Date()).getTime()
+    });
+
     return this.authState.auth.updateProfile({displayName: displayName, photoURL: null});
   }
 }

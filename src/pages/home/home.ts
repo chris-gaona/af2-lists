@@ -13,6 +13,7 @@ export class HomePage {
 
   songs: FirebaseListObservable<any>;
   currentUser: any;
+  user: any;
 
   constructor(public navCtrl: NavController,
               public alertCtrl: AlertController,
@@ -21,6 +22,7 @@ export class HomePage {
               af: AngularFire) {
     this.currentUser = this.authData.getUserInfo();
     this.songs = af.database.list('/users/' + this.currentUser.uid + '/songs');
+    this.user = af.database.list('/users/' + this.currentUser.uid + '/user-info');
   }
 
   logoutUser() {
